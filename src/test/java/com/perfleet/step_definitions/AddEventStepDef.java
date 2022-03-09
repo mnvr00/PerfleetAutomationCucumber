@@ -6,11 +6,14 @@ import com.perfleet.pages.GeneralInformationPage;
 import com.perfleet.pages.LoginPage;
 import com.perfleet.utilities.BrowserUtils;
 import com.perfleet.utilities.ConfigurationReader;
+import com.perfleet.utilities.Driver;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -42,13 +45,26 @@ public class AddEventStepDef {
     @Given("go to from {string} to {string} module")
     public void go_to_from_to_module(String string, String string2) {
         DashboardPage dashboardPage = new DashboardPage();
-        dashboardPage.navigateToModule("Fleet", "Vehicles");
+
+        dashboardPage.waitUntilLoaderScreenDisappear();
 
         try {
-            addEventPage.addEventPagee.isDisplayed();
-        } catch (Throwable error) {
-            addEventPage.close.click();
+            WebElement closeBtn = Driver.get().findElement(By.cssSelector("button[title='close']"));
+            closeBtn.click();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+        dashboardPage.navigateToModule("Fleet", "Vehicles");
+
+//        try {
+//            WebElement closeBtn = Driver.get().findElement(By.cssSelector("button[title='close']"));
+//            if (closeBtn.isDisplayed()) {
+//                closeBtn.click();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 
     }
@@ -56,6 +72,7 @@ public class AddEventStepDef {
     @When("clicking on any vehicle")
     public void clicking_on_any_vehicle() {
         new DashboardPage().waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitForClickablility(generalInformationPage.carRow, 4);
         generalInformationPage.carRow.click();
     }
 
@@ -81,6 +98,8 @@ public class AddEventStepDef {
 
     @And("clicking on {string} button")
     public void clickingOnButton(String arg0) {
+        new DashboardPage().waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitForClickablility(generalInformationPage.addEventButton, 5);
         generalInformationPage.addEventButton.click();
     }
 
