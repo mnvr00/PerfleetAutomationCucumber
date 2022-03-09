@@ -1,0 +1,15 @@
+User Story :
+As a store manager and sales manager, I should be able to add an event
+
+Acceptance Criteria:
+1- User can access the "Add Event" page from the "General Information" page (by clicking on any vehicle/row under Fleet-Vehicle module)
+2- Sales Manager and Store manager can click "Add Event" button, but Driver can NOT see "Add Event" button
+3- After clicking on "Add event" button, "Add Event" page should pop up.
+4- Compulsory fields are shown as below:
+    -> Title
+    -> Owner
+    -> Organizer display name
+    -> Organizer email
+    -> Start Date
+    -> End Date
+5- If any compulsory field is not filled, "This value should not be blank." message should be displayed after clicking on save button.
