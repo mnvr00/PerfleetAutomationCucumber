@@ -3,6 +3,7 @@ package com.perfleet.pages;
 import com.perfleet.utilities.BrowserUtils;
 import com.perfleet.utilities.Driver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -12,26 +13,40 @@ public class AddEventPage {
    public AddEventPage(){
        PageFactory.initElements(Driver.get(),this);}
 
-    @FindBy(xpath = "//header/div[@id='main-menu']/ul[1]/li[2]/a[1]/span[1]")
-    public WebElement fleetButton;
-
-    @FindBy(xpath = "//*[text()='Vehicles']")
-    public WebElement vehicleButton;
 
     @FindBy(xpath = "//h1[@class='oro-subtitle']")
     public WebElement title;
 
-    @FindBy(xpath = "//*[.='Cars']")
-    public WebElement cars;
+
+    @FindBy(xpath = "//input[@data-ftid='oro_calendar_event_form_allDay']")
+    public WebElement allDayEvent;
+
+    @FindBy(xpath = "//input[@data-name='recurrence-repeat']")
+    public WebElement repeatsButton;
 
     @FindBy(xpath = "//*[text()='John Johnson']")
     public WebElement driver;
 
-    @FindBy(xpath = "//*[text()='General']")
-    public WebElement general;
+    @FindBy(xpath = "//span[@class='color']")
+    public List<WebElement> colorButton;
 
-    @FindBy(xpath = "//span[@class='color empty-color']")
-    public WebElement colorButton;
+    @FindBy(css = "[for='recurrence-repeats-view285']")
+    public WebElement repeatDropdown;
+
+    //@FindBy(xpath = "//select[@data-name='recurrence-repeats']")
+    //public WebElement repeatDropdown;
+
+    @FindBy(xpath = "(//input[@type='radio'])[3]")
+    public WebElement neverEndButton;
+
+    @FindBy(xpath = "(//input[@type='radio'])[3]")
+    public WebElement afterEndButton;
+
+    @FindBy(xpath = "(//input[@type='radio'])[3]")
+    public WebElement byEndButton;
+
+    @FindBy(xpath = "//div[@class='list-item']")
+    public List<WebElement> addedEventList;
 
     @FindBy(xpath = "//label[@class='required']")
     public List<WebElement> Allrequired;
@@ -45,11 +60,7 @@ public class AddEventPage {
     @FindBy(xpath = "(//input[@type='text'])[7]")
     public WebElement organizerName;
 
-
-    //@FindBy(xpath = "//*[@id=\"oro_calendar_event_form_organizerDisplayName-uid-6228ab8b8723a\"]")
-    //public WebElement organizerName;
-
-    @FindBy(xpath = "(//input[@type='email'])[2]")
+    @FindBy(xpath = "//*[@id=\"oro_calendar_event_form_organizerEmail-uid-622934118e2f6\"]")
     public WebElement organizerEmail;
 
     @FindBy(xpath = "(//input[@placeholder='Choose a date'])[3]")
@@ -61,13 +72,8 @@ public class AddEventPage {
     @FindBy(css = "[data-handler='today']")
     public WebElement today;
 
-
-    //@FindBy(xpath = "(//span[@class='action-wrapper']/button)[4]")
-    //public WebElement saveButton;
-
     @FindBy(xpath = "//button[@class='btn btn-primary']")
     public WebElement saveButton;
-
 
     @FindBy(xpath = "//span[@class='validation-failed']/span/span")
     public WebElement blankErrorMessage;
@@ -75,23 +81,30 @@ public class AddEventPage {
     @FindBy(css = "[class='form form-horizontal']")
     public WebElement addEventPagee;
 
-    @FindBy(css ="[id=ui-id-10]")
+    @FindBy(xpath = "//*[@id=\"ui-id-2\"]")
     public WebElement headerAddEvent;
 
     @FindBy(css = "[title='close']")
     public WebElement close;
 
-
+    @FindBy(xpath = "(//label[@data-required='1'])[3]")
+    public WebElement addEventTitle;
 
     public List<String> AllrequiredFields(){
         List<WebElement> required = Allrequired;
         return BrowserUtils.getElementsText(required);
     }
 
+    public WebElement getColors(String colorType){
+         WebElement color=null;
+          for (int i = 0; i <colorButton.size() ; i++) {
+            if(colorButton.get(i).getAttribute("title").equalsIgnoreCase("colorTitle")){
+             color=colorButton.get(i);
+            }
 
-
-
-
+               }
+              return  color;
+             }
 
 
 

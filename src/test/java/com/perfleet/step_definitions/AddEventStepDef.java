@@ -14,8 +14,9 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
-import java.util.List;
+import java.util.*;
 
 public class AddEventStepDef {
 
@@ -57,16 +58,6 @@ public class AddEventStepDef {
 
         dashboardPage.navigateToModule("Fleet", "Vehicles");
 
-//        try {
-//            WebElement closeBtn = Driver.get().findElement(By.cssSelector("button[title='close']"));
-//            if (closeBtn.isDisplayed()) {
-//                closeBtn.click();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
     }
 
     @When("clicking on any vehicle")
@@ -88,11 +79,13 @@ public class AddEventStepDef {
 
     @Then("{string} or {string} can click {string} button")
     public void or_can_click_button(String string, String string2, String string3) {
+
         Assert.assertTrue(generalInformationPage.addEventButton.isEnabled());
     }
 
     @Then("{string} can NOT see {string} button")
     public void can_NOT_see_button(String string, String string2) {
+        BrowserUtils.waitForClickablility(generalInformationPage.addEventButton, 4);
         Assert.assertFalse(generalInformationPage.addEventButton.isDisplayed());
     }
 
@@ -105,22 +98,15 @@ public class AddEventStepDef {
 
     @Then("{string} page should pop up.")
     public void page_should_pop_up(String string) {
-        Assert.assertTrue(addEventPage.addEventPagee.isDisplayed());
+        new DashboardPage().waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitForClickablility(addEventPage.saveButton, 5);
+        Assert.assertTrue(addEventPage.saveButton.isDisplayed());
     }
 
-    @And("user logout")
-    public void user_logout() {
-        LoginPage loginPage = new LoginPage();
-        BrowserUtils.clickWithJS(loginPage.logOut);
-    }
-
-    @When("add event page still appear there")
-    public void add_event_page_still_appear_there() {
-        Assert.assertFalse(addEventPage.addEventPagee.isDisplayed());
-    }
 
     @When("Compulsory fields are shown as below:")
     public void compulsory_fields_are_shown_as_below(List<String> dataTable) {
+        BrowserUtils.waitFor(3);
         Assert.assertEquals(dataTable, addEventPage.AllrequiredFields());
     }
 
@@ -128,11 +114,16 @@ public class AddEventStepDef {
     public void fillTheCompulsoryFieldsWithValidValuesButLeaveTitleEmpty() {
         BrowserUtils.waitFor(3);
         addEventPage.organizerName.sendKeys("mnvr");
-        addEventPage.organizerEmail.sendKeys("mnvr@gmail.com");
-        addEventPage.Start.click();
-        addEventPage.today.click();
-        addEventPage.FirstTitle.sendKeys("");
-        BrowserUtils.waitFor(3);
+
+        //BrowserUtils.waitForClickablility(addEventPage.organizerEmail, 4);
+        //addEventPage.organizerEmail.sendKeys("mnvr@gmail.com");
+
+        //BrowserUtils.waitForClickablility(addEventPage.Start, 30);
+        //addEventPage.Start.click();
+       // addEventPage.today.click();
+
+        //addEventPage.FirstTitle.sendKeys("");
+       // BrowserUtils.waitFor(3);
 
     }
 
@@ -149,13 +140,71 @@ public class AddEventStepDef {
 
     @When("click the save button")
     public void click_the_save_button() {
-        BrowserUtils.waitFor(3);
+        new DashboardPage().waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitForClickablility(addEventPage.saveButton, 4);
         addEventPage.saveButton.click();
     }
 
     @Then("{string} message should be displayed")
     public void message_should_be_displayed(String string) {
+        BrowserUtils.waitForClickablility(addEventPage.blankErrorMessage, 4);
         Assert.assertEquals(addEventPage.blankErrorMessage.getText(), "This value should not be blank.");
     }
 
+
+    //ozlem
+
+    @And("the user can mark the event with any color")
+    public void theUserCanMarkTheEventWithAnyColor() {
+        new DashboardPage().waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitFor(4);
+        addEventPage.getColors("#5484ED").click();
+
+    }
+
+    @When("the user can mark {string} button")
+    public void theUserCanMarkButton(String alldayevent) {
+        DashboardPage dashboardPage=new DashboardPage();
+        dashboardPage.waitUntilLoaderScreenDisappear();
+        Assert.assertTrue(addEventPage.allDayEvent.isDisplayed());
+
+    }
+
+
+    @Then("Repeat option should includes the options below")
+    public void repeatOptionShouldIncludesTheOptionsBelow(List<String> dataTable) {
+
+
+
+
+
+        }
+
+
+    @Then("Ends option should be as below")
+    public void endsOptionShouldBeAsBelow(List<String> dataTable) {
+
+
+
+
+
+        
+    }
+
+    @And("Ends options should be clickable")
+    public void endsOptionsShouldBeClickable() {
+
+        Assert.assertTrue(addEventPage.afterEndButton.isEnabled());
+        Assert.assertTrue(addEventPage.byEndButton.isEnabled());
+        Assert.assertTrue(addEventPage.neverEndButton.isEnabled());
+    }
+
+    @When("All Users can see all events in the General information page")
+    public void allUsersCanSeeAllEventsInTheGeneralInformationPage() {
+        List<String> list=BrowserUtils.getElementsText(addEventPage.addedEventList);
+        String option = list.get(0).toString();
+        System.out.println(option);
+        String actual = "Calendar event added by John Doe\n" + "...\n" + "competition\n" + "Yesterday";
+        Assert.assertEquals(option,actual);
+    }
 }

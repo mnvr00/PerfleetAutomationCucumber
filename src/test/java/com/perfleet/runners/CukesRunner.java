@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "com/perfleet/step_definitions",
         dryRun = false,
-        tags = "@munevver"
+        tags = "@ozlem"
 )
 public class CukesRunner {
 }
