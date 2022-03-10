@@ -157,9 +157,9 @@ public class AddEventStepDef {
     @And("the user can mark the event with any color")
     public void theUserCanMarkTheEventWithAnyColor() {
         new DashboardPage().waitUntilLoaderScreenDisappear();
-        BrowserUtils.waitFor(4);
-        addEventPage.getColors("#5484ED").click();
-
+        BrowserUtils.waitFor(5);
+        addEventPage.getColor(3).click();
+        Assert.assertTrue(addEventPage.getColor(3).isDisplayed());
     }
 
     @When("the user can mark {string} button")
@@ -174,9 +174,16 @@ public class AddEventStepDef {
     @Then("Repeat option should includes the options below")
     public void repeatOptionShouldIncludesTheOptionsBelow(List<String> dataTable) {
 
+        new DashboardPage().waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitForClickablility(addEventPage.repeatCheckbox,4);
+        addEventPage.repeatCheckbox.click();
 
+        Select dropdown = new Select(addEventPage.repeatDropdown);
 
-
+        List<WebElement> repeatDDOptions = dropdown.getOptions();
+        for(int i = 0; i< repeatDDOptions.size();i++){
+            Assert.assertEquals(dataTable.get(i),repeatDDOptions.get(i).getText());
+        }
 
         }
 
@@ -184,23 +191,37 @@ public class AddEventStepDef {
     @Then("Ends option should be as below")
     public void endsOptionShouldBeAsBelow(List<String> dataTable) {
 
+        BrowserUtils.waitFor(2);
+        addEventPage.repeatCheckbox.click();
+
+        for (int i = 0; i < dataTable.size(); i++) {
+            System.out.println("repeatEnds.get(i).getText() = " + addEventPage.repeatEnds.get(i).getText());
+            Assert.assertTrue(addEventPage.repeatEnds.get(i).getText().contains(dataTable.get(i)));
+        }
 
 
 
 
-        
+
     }
 
     @And("Ends options should be clickable")
     public void endsOptionsShouldBeClickable() {
 
-        Assert.assertTrue(addEventPage.afterEndButton.isEnabled());
-        Assert.assertTrue(addEventPage.byEndButton.isEnabled());
-        Assert.assertTrue(addEventPage.neverEndButton.isEnabled());
+        new DashboardPage().waitUntilLoaderScreenDisappear();
+        BrowserUtils.waitForClickablility(addEventPage.repeatCheckbox,4);
+        addEventPage.repeatCheckbox.click();
+
+
+        Assert.assertTrue(addEventPage.afterEndButton.isSelected());
+        Assert.assertTrue(addEventPage.byEndButton.isSelected());
+        Assert.assertTrue(addEventPage.neverEndButton.isSelected());
     }
 
     @When("All Users can see all events in the General information page")
     public void allUsersCanSeeAllEventsInTheGeneralInformationPage() {
+
+        new DashboardPage().waitUntilLoaderScreenDisappear();
         List<String> list=BrowserUtils.getElementsText(addEventPage.addedEventList);
         String option = list.get(0).toString();
         System.out.println(option);

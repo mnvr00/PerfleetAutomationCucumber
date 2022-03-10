@@ -2,6 +2,7 @@ package com.perfleet.pages;
 
 import com.perfleet.utilities.BrowserUtils;
 import com.perfleet.utilities.Driver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -30,11 +31,7 @@ public class AddEventPage {
     @FindBy(xpath = "//span[@class='color']")
     public List<WebElement> colorButton;
 
-    @FindBy(css = "[for='recurrence-repeats-view285']")
-    public WebElement repeatDropdown;
 
-    //@FindBy(xpath = "//select[@data-name='recurrence-repeats']")
-    //public WebElement repeatDropdown;
 
     @FindBy(xpath = "(//input[@type='radio'])[3]")
     public WebElement neverEndButton;
@@ -90,6 +87,16 @@ public class AddEventPage {
     @FindBy(xpath = "(//label[@data-required='1'])[3]")
     public WebElement addEventTitle;
 
+
+    @FindBy(css = "div[class='controls recurrence-subview-control recurrence-subview-control__items']>div")
+    public List<WebElement> repeatEnds;
+
+
+ @FindBy(css = "[id^='recurrence-repeat-view']")
+ public WebElement repeatCheckbox;
+ @FindBy(css = "[id^='recurrence-repeats-view']")
+ public WebElement repeatDropdown;
+
     public List<String> AllrequiredFields(){
         List<WebElement> required = Allrequired;
         return BrowserUtils.getElementsText(required);
@@ -106,6 +113,10 @@ public class AddEventPage {
               return  color;
              }
 
+
+ public WebElement getColor(int num){
+  return Driver.get().findElement(By.xpath("//span[@class='color']["+num+"]"));
+ }
 
 
 }
